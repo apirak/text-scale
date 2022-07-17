@@ -1,40 +1,58 @@
 import { setRelaunchButton } from "@create-figma-plugin/utilities";
-import i18next from "i18next";
+import { getReferenceName } from "./styleUtility";
+
+interface TextScale {
+  large: { [key: string]: string };
+  xxlarge: { [key: string]: string };
+  xxxlarge: { [key: string]: string };
+}
+
+const textScale: TextScale = {
+  large: {},
+  xxlarge: {},
+  xxxlarge: {},
+};
+
+function loadTextStyle() {
+  figma.getLocalTextStyles().forEach((textStyle) => {
+    let { name, id } = textStyle;
+    let [folder, refName] = getReferenceName(name);
+    if (folder === "Large") {
+      textScale.large[refName] = id;
+    }
+    if (folder === "XXLarge") {
+      textScale.xxlarge[refName] = id;
+    }
+  });
+
+  console.log("textScale", textScale);
+}
 
 function updateAllTextProperty() {
-  const tEn = figma.currentPage.findAll((node) => /##t.en/.test(node.name));
-  const tEnJson = (<TextNode>tEn[0]).characters;
-  const tEnJsonObject = JSON.parse(`{ ${tEnJson} }`);
+  let selectedNodes = figma.currentPage.selection;
 
-  i18next.init({
-    lng: "en", // if you're using a language detector, do not define the lng option
-    debug: true,
-    resources: {
-      en: {
-        translation: tEnJsonObject,
-      },
-    },
+  selectedNodes.forEach((selectedNode) => {
+    (<FrameNode>selectedNode).findAll().forEach((node) => {
+      if (node.type === "TEXT") {
+        let text = <TextNode>node;
+        console.log("style id", text.textStyleId);
+      }
+    });
   });
-
-  const textNodes = figma.currentPage.findAll((node) =>
-    /#t.|_#t./.test(node.name)
-  );
-
-  textNodes.forEach((textNode) => {
-    console.log(textNode.name);
-  });
-
   // await Promise.all(
   // console.log("bank");
   // );
 }
 
 export default function () {
-  setRelaunchButton(figma.currentPage, "figma-i18next", {
-    description: "🔍 Update text",
+  setRelaunchButton(figma.currentPage, "Text Scale", {
+    description: "Update to Large Scale",
   });
 
+  loadTextStyle();
   updateAllTextProperty();
+
+  console.log("command", figma.command);
 
   // updateAllTextProperty().then(() => {
   //   figma.closePlugin("Updated 🎉");
