@@ -2,7 +2,9 @@ interface TextScale {
   large: { [key: string]: string };
   xxlarge: { [key: string]: string };
   xxxlarge: { [key: string]: string };
-}
+};
+
+type Scale = "large" | "xxlarge" | "xxxlarge";
 
 function loadTextStyle(): TextScale {
   let textScale: TextScale = {
@@ -14,10 +16,13 @@ function loadTextStyle(): TextScale {
   figma.getLocalTextStyles().forEach((textStyle) => {
     let { name, id } = textStyle;
     let [folder, refName] = getReferenceName(name);
-    if (folder === "Large") {
+    if (folder === "large") {
       textScale.large[refName] = id;
     }
-    if (folder === "XXLarge") {
+    if (folder === "xxlarge") {
+      textScale.xxlarge[refName] = id;
+    }
+    if (folder === "xxxlarge") {
       textScale.xxlarge[refName] = id;
     }
   });
@@ -27,10 +32,8 @@ function loadTextStyle(): TextScale {
 
 function getReferenceName(name: string): [string, string] {
   let directory = name.split("/").map((str) => str.trim());
-
-  return [directory[0], directory.slice(1).join("/")];
+  return [directory[0].toLowerCase(), directory.slice(1).join("/").toLowerCase()];
 }
 
 export { getReferenceName, loadTextStyle };
-export type { TextScale };
-
+export type { TextScale, Scale };

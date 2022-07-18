@@ -29,12 +29,6 @@
     "name": "Text Scale",
     "menu": [
       {
-        "name": "Open UI",
-        "main": "src/main.ts",
-        "ui": "src/ui.tsx"
-      },
-      "-",
-      {
         "name": "Large",
         "main": {
           "handler": "toLarge",
@@ -45,6 +39,13 @@
         "name": "XXLarge",
         "main": {
           "handler": "toXXLarge",
+          "src": "src/updateText.ts"
+        }
+      },
+      {
+        "name": "XXXLarge",
+        "main": {
+          "handler": "toXXXLarge",
           "src": "src/updateText.ts"
         }
       }

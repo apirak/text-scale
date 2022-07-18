@@ -2,53 +2,53 @@ import { getReferenceName } from "../styleUtility";
 
 describe("Separete Key from Name", () => {
   it("Separate Simple Name", () => {
-    expect(getReferenceName("Large / Super")).toEqual(["Large", "Super"]);
-    expect(getReferenceName("Large /  Super")).toEqual(["Large", "Super"]);
-    expect(getReferenceName("Large /Super")).toEqual(["Large", "Super"]);
-    expect(getReferenceName("Large/Super")).toEqual(["Large", "Super"]);
-    expect(getReferenceName("XXLarge/Super")).toEqual(["XXLarge", "Super"]);
+    expect(getReferenceName("Large / Super")).toEqual(["large", "super"]);
+    expect(getReferenceName("Large /  Super")).toEqual(["large", "super"]);
+    expect(getReferenceName("Large /Super")).toEqual(["large", "super"]);
+    expect(getReferenceName("Large/Super")).toEqual(["large", "super"]);
+    expect(getReferenceName("XXLarge/Super")).toEqual(["xxlarge", "super"]);
   });
 
   it("Separate Name with space", () => {
     expect(getReferenceName("Large / Super man")).toEqual([
-      "Large",
-      "Super man",
+      "large",
+      "super man",
     ]);
     expect(getReferenceName("Large /  Super man")).toEqual([
-      "Large",
-      "Super man",
+      "large",
+      "super man",
     ]);
     expect(getReferenceName("Large /Super man")).toEqual([
-      "Large",
-      "Super man",
+      "large",
+      "super man",
     ]);
-    expect(getReferenceName("Large/Super man")).toEqual(["Large", "Super man"]);
+    expect(getReferenceName("Large/Super man")).toEqual(["large", "super man"]);
     expect(getReferenceName("XXLarge/Super man")).toEqual([
-      "XXLarge",
-      "Super man",
+      "xxlarge",
+      "super man",
     ]);
   });
 
   it("Separate two folder", () => {
     expect(getReferenceName("Large / Super / man")).toEqual([
-      "Large",
-      "Super/man",
+      "large",
+      "super/man",
     ]);
     expect(getReferenceName("Large /  Super / man")).toEqual([
-      "Large",
-      "Super/man",
+      "large",
+      "super/man",
     ]);
     expect(getReferenceName("Large /Super /man")).toEqual([
-      "Large",
-      "Super/man",
+      "large",
+      "super/man",
     ]);
     expect(getReferenceName("Large/Super /man")).toEqual([
-      "Large",
-      "Super/man",
+      "large",
+      "super/man",
     ]);
     expect(getReferenceName("XXLarge/Super /  man")).toEqual([
-      "XXLarge",
-      "Super/man",
+      "xxlarge",
+      "super/man",
     ]);
   });
 });

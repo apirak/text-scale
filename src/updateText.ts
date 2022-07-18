@@ -1,54 +1,78 @@
 import { setRelaunchButton } from "@create-figma-plugin/utilities";
-import { getReferenceName, TextScale, loadTextStyle } from "./styleUtility";
+import { getReferenceName, TextScale, loadTextStyle, Scale } from "./styleUtility";
 
 let textScale: TextScale;
-let targetScale:string = "large";
+let targetScale: Scale = "large";
+let countUpdated: number = 0;
+let countTextNode: number = 0;
+
+function updateTextProperty(node:TextNode){
+  let textNodeStyleId = node.textStyleId;
+  if(textNodeStyleId != null){
+    let textStyle = figma.getStyleById(<string>textNodeStyleId);
+    if (textStyle != null) {
+      let [directory, textStyleName] = getReferenceName(textStyle.name);
+      let textStyleId = textScale[targetScale][textStyleName];
+      if(textStyleId != undefined){
+        node.textStyleId = textScale[targetScale][textStyleName];
+        countUpdated++;
+      }
+    }
+  }
+  countTextNode++;
+}
+
+function updateOnlyTextNode(node:SceneNode) {
+  if(node.type === "TEXT"){
+    updateTextProperty(<TextNode>node);
+  }
+}
 
 function updateAllTextProperty() {
   let selectedNodes = figma.currentPage.selection;
-
+  if(selectedNodes.length == 0){
+    figma.closePlugin("Empty target, Please selected some layer")
+  }
   selectedNodes.forEach((selectedNode) => {
-    (<FrameNode>selectedNode).findAll().forEach((node) => {
-      if (node.type === "TEXT") {
-        let textNode = <TextNode>node;
-        // textNode.textStyleId = textScale[targetScale]["body"]
-        console.log("style id", textNode.textStyleId);
-        console.log("TextScale", textScale);
-        console.log("TextScale", textScale["large"]);
-      }
-    });
+    updateOnlyTextNode(selectedNode);
+    if(selectedNode.type === "FRAME"){
+      (<FrameNode>selectedNode).findAll().forEach((node) => {
+        updateOnlyTextNode(node);
+      });
+    }
   });
-  // await Promise.all(
-  // console.log("bank");
-  // );
 }
 
 let startPlugin = () => {
-  setRelaunchButton(figma.currentPage, "Text Scale", {
-    description: "Update to Large Scale",
-  });
-
-  textScale = loadTextStyle();
-  updateAllTextProperty();
-
-  console.log("Target Scale", targetScale);
-
-  // updateAllTextProperty().then(() => {
-  //   figma.closePlugin("Updated 🎉");
+  // setRelaunchButton(figma.currentPage, "Text Scale", {
+  //   description: "Update to Large Scale",
   // });
 
-  figma.closePlugin("Updated 🎉");
-}
+  textScale = loadTextStyle();
+
+  if(Object.keys(textScale[targetScale]).length === 0) {
+    figma.closePlugin(`Empty style for "${targetScale}"`);
+  }
+
+  updateAllTextProperty();
+
+  figma.closePlugin(`Updated (${countUpdated}/${countTextNode})  🎉`);
+};
 
 let toLarge = () => {
-  targetScale = "Large";
+  targetScale = "large";
   startPlugin();
-}
+};
 
 let toXXLarge = () => {
-  targetScale = "XXLarge"
+  targetScale = "xxlarge";
   startPlugin();
-}
+};
+
+let toXXXLarge = () => {
+  targetScale = "xxxlarge";
+  startPlugin();
+};
 
 export default startPlugin;
-export { updateAllTextProperty, toLarge, toXXLarge };
+export { updateAllTextProperty, toLarge, toXXLarge, toXXXLarge };
