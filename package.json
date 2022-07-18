@@ -36,11 +36,17 @@
       "-",
       {
         "name": "Large",
-        "main": "src/updateText.ts"
+        "main": {
+          "handler": "toLarge",
+          "src": "src/updateText.ts"
+        }
       },
       {
         "name": "XXLarge",
-        "main": "src/updateText.ts"
+        "main": {
+          "handler": "toXXLarge",
+          "src": "src/updateText.ts"
+        }
       }
     ],
     "relaunchButtons": {

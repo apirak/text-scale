@@ -1,32 +1,8 @@
 import { setRelaunchButton } from "@create-figma-plugin/utilities";
-import { getReferenceName } from "./styleUtility";
+import { getReferenceName, TextScale, loadTextStyle } from "./styleUtility";
 
-interface TextScale {
-  large: { [key: string]: string };
-  xxlarge: { [key: string]: string };
-  xxxlarge: { [key: string]: string };
-}
-
-const textScale: TextScale = {
-  large: {},
-  xxlarge: {},
-  xxxlarge: {},
-};
-
-function loadTextStyle() {
-  figma.getLocalTextStyles().forEach((textStyle) => {
-    let { name, id } = textStyle;
-    let [folder, refName] = getReferenceName(name);
-    if (folder === "Large") {
-      textScale.large[refName] = id;
-    }
-    if (folder === "XXLarge") {
-      textScale.xxlarge[refName] = id;
-    }
-  });
-
-  console.log("textScale", textScale);
-}
+let textScale: TextScale;
+let targetScale:string = "large";
 
 function updateAllTextProperty() {
   let selectedNodes = figma.currentPage.selection;
@@ -34,8 +10,11 @@ function updateAllTextProperty() {
   selectedNodes.forEach((selectedNode) => {
     (<FrameNode>selectedNode).findAll().forEach((node) => {
       if (node.type === "TEXT") {
-        let text = <TextNode>node;
-        console.log("style id", text.textStyleId);
+        let textNode = <TextNode>node;
+        // textNode.textStyleId = textScale[targetScale]["body"]
+        console.log("style id", textNode.textStyleId);
+        console.log("TextScale", textScale);
+        console.log("TextScale", textScale["large"]);
       }
     });
   });
@@ -44,15 +23,15 @@ function updateAllTextProperty() {
   // );
 }
 
-export default function () {
+let startPlugin = () => {
   setRelaunchButton(figma.currentPage, "Text Scale", {
     description: "Update to Large Scale",
   });
 
-  loadTextStyle();
+  textScale = loadTextStyle();
   updateAllTextProperty();
 
-  console.log("command", figma.command);
+  console.log("Target Scale", targetScale);
 
   // updateAllTextProperty().then(() => {
   //   figma.closePlugin("Updated 🎉");
@@ -61,4 +40,15 @@ export default function () {
   figma.closePlugin("Updated 🎉");
 }
 
-export { updateAllTextProperty };
+let toLarge = () => {
+  targetScale = "Large";
+  startPlugin();
+}
+
+let toXXLarge = () => {
+  targetScale = "XXLarge"
+  startPlugin();
+}
+
+export default startPlugin;
+export { updateAllTextProperty, toLarge, toXXLarge };
