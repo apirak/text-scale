@@ -36,6 +36,13 @@
         }
       },
       {
+        "name": "XLarge",
+        "main": {
+          "handler": "toXLarge",
+          "src": "src/updateText.ts"
+        }
+      },
+      {
         "name": "XXLarge",
         "main": {
           "handler": "toXXLarge",
@@ -47,6 +54,28 @@
         "main": {
           "handler": "toXXXLarge",
           "src": "src/updateText.ts"
+        }
+      },
+      {
+        "name": "AX1",
+        "main": {
+          "handler": "toAX1",
+          "src": "src/updateText.ts"
+        }
+      },
+      {
+        "name": "AX2",
+        "main": {
+          "handler": "toAX2",
+          "src": "src/updateText.ts"
+        }
+      },
+      "-",
+      {
+        "name": "Generate XXLarge",
+        "main": {
+          "handler": "generateXXLarge",
+          "src": "src/GenerateStyle.ts"
         }
       }
     ],

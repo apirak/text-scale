@@ -1,19 +1,24 @@
 import { setRelaunchButton } from "@create-figma-plugin/utilities";
-import { getReferenceName, TextScale, loadTextStyle, Scale } from "./styleUtility";
+import {
+  getReferenceName,
+  TextScale,
+  loadTextStyle,
+  Scale,
+} from "./styleUtility";
 
 let textScale: TextScale;
 let targetScale: Scale = "large";
 let countUpdated: number = 0;
 let countTextNode: number = 0;
 
-function updateTextProperty(node:TextNode){
+function updateTextProperty(node: TextNode) {
   let textNodeStyleId = node.textStyleId;
-  if(textNodeStyleId != null){
+  if (textNodeStyleId != null) {
     let textStyle = figma.getStyleById(<string>textNodeStyleId);
     if (textStyle != null) {
       let [directory, textStyleName] = getReferenceName(textStyle.name);
       let textStyleId = textScale[targetScale][textStyleName];
-      if(textStyleId != undefined){
+      if (textStyleId != undefined) {
         node.textStyleId = textScale[targetScale][textStyleName];
         countUpdated++;
       }
@@ -22,20 +27,20 @@ function updateTextProperty(node:TextNode){
   countTextNode++;
 }
 
-function updateOnlyTextNode(node:SceneNode) {
-  if(node.type === "TEXT"){
+function updateOnlyTextNode(node: SceneNode) {
+  if (node.type === "TEXT") {
     updateTextProperty(<TextNode>node);
   }
 }
 
 function updateAllTextProperty() {
   let selectedNodes = figma.currentPage.selection;
-  if(selectedNodes.length == 0){
-    figma.closePlugin("Empty target, Please selected some layer")
+  if (selectedNodes.length == 0) {
+    figma.closePlugin("Empty target, Please selected some layer");
   }
   selectedNodes.forEach((selectedNode) => {
     updateOnlyTextNode(selectedNode);
-    if(selectedNode.type === "FRAME"){
+    if (selectedNode.type === "FRAME") {
       (<FrameNode>selectedNode).findAll().forEach((node) => {
         updateOnlyTextNode(node);
       });
@@ -50,7 +55,7 @@ let startPlugin = () => {
 
   textScale = loadTextStyle();
 
-  if(Object.keys(textScale[targetScale]).length === 0) {
+  if (Object.keys(textScale[targetScale]).length === 0) {
     figma.closePlugin(`Empty style for "${targetScale}"`);
   }
 
@@ -64,6 +69,11 @@ let toLarge = () => {
   startPlugin();
 };
 
+let toXLarge = () => {
+  targetScale = "xlarge";
+  startPlugin();
+};
+
 let toXXLarge = () => {
   targetScale = "xxlarge";
   startPlugin();
@@ -74,5 +84,15 @@ let toXXXLarge = () => {
   startPlugin();
 };
 
+let toAX1 = () => {
+  targetScale = "ax1";
+  startPlugin();
+};
+
+let toAX2 = () => {
+  targetScale = "ax2";
+  startPlugin();
+};
+
 export default startPlugin;
-export { updateAllTextProperty, toLarge, toXXLarge, toXXXLarge };
+export { updateAllTextProperty, toLarge, toXLarge, toXXLarge, toXXXLarge, toAX1, toAX2};

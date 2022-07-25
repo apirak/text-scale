@@ -1,0 +1,5 @@
+let generateXXLarge = () => {
+
+}
+
+export {generateXXLarge}
