@@ -1,5 +1,3 @@
-let generateXXLarge = () => {
+let generateXXLarge = () => {};
 
-}
-
-export {generateXXLarge}
+export { generateXXLarge };

@@ -17,8 +17,7 @@ function updateTextProperty(node: TextNode) {
     let textStyle = figma.getStyleById(<string>textNodeStyleId);
     if (textStyle != null) {
       let [directory, textStyleName] = getReferenceName(textStyle.name);
-      let textStyleId = textScale[targetScale][textStyleName];
-      if (textStyleId != undefined) {
+      if (textScale[targetScale][textStyleName] != undefined) {
         node.textStyleId = textScale[targetScale][textStyleName];
         countUpdated++;
       }
@@ -95,4 +94,12 @@ let toAX2 = () => {
 };
 
 export default startPlugin;
-export { updateAllTextProperty, toLarge, toXLarge, toXXLarge, toXXXLarge, toAX1, toAX2};
+export {
+  updateAllTextProperty,
+  toLarge,
+  toXLarge,
+  toXXLarge,
+  toXXXLarge,
+  toAX1,
+  toAX2,
+};

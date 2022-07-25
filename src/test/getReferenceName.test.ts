@@ -9,6 +9,7 @@ describe("Separete Key from Name", () => {
     expect(getReferenceName("XXLarge/Super")).toEqual(["xxlarge", "super"]);
   });
 
+
   it("Separate Name with space", () => {
     expect(getReferenceName("Large / Super man")).toEqual([
       "large",
@@ -48,6 +49,18 @@ describe("Separete Key from Name", () => {
     ]);
     expect(getReferenceName("XXLarge/Super /  man")).toEqual([
       "xxlarge",
+      "super/man",
+    ]);
+  });
+
+  // TODO: Try add "x / / lksdjf" style to figma and check real style name
+  it("Ignore Empty Foler", () => {
+    expect(getReferenceName("//Super /man")).toEqual([
+      "",
+      "super/man",
+    ]);
+    expect(getReferenceName("/Super /man")).toEqual([
+      "",
       "super/man",
     ]);
   });

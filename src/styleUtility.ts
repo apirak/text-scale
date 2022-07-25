@@ -32,7 +32,7 @@ function loadTextStyle(): TextScale {
 }
 
 function getReferenceName(name: string): [Scale, string] {
-  let directory = name.split("/").map((str) => str.trim());
+  let directory = name.split("/").filter((path:string) => !!path).map((str) => str.trim());
   return [
     <Scale>directory[0].toLowerCase(),
     directory.slice(1).join("/").toLowerCase(),
