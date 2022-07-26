@@ -10,6 +10,15 @@ interface TextScale {
 type Scale = "large" | "xlarge" | "xxlarge" | "xxxlarge" | "ax1" | "ax2";
 let Scale = ["large", "xlarge", "xxlarge", "xxxlarge", "ax1", "ax2"];
 
+let scaleName = {
+  "large":"Large",
+  "xlarge":"XLarge",
+  "xxlarge":"XXLarge",
+  "xxxlarge":"XXXLarge",
+  "ax1":"AX1",
+  "ax2":"AX2"
+}
+
 function loadTextStyle(): TextScale {
   let textScale: TextScale = {
     large: {},
@@ -39,5 +48,5 @@ function getReferenceName(name: string): [Scale, string] {
   ];
 }
 
-export { getReferenceName, loadTextStyle };
+export { getReferenceName, loadTextStyle, scaleName };
 export type { TextScale, Scale };

@@ -55,13 +55,21 @@ describe("Separete Key from Name", () => {
 
   // TODO: Try add "x / / lksdjf" style to figma and check real style name
   it("Ignore Empty Foler", () => {
-    expect(getReferenceName("//Super /man")).toEqual([
-      "",
+    expect(getReferenceName("/Large/Super /man")).toEqual([
+      "large",
       "super/man",
     ]);
-    expect(getReferenceName("/Super /man")).toEqual([
-      "",
+    expect(getReferenceName("//Large/Super /man")).toEqual([
+      "large",
       "super/man",
+    ]);
+    expect(getReferenceName("///Large/Super /man")).toEqual([
+      "large",
+      "super/man",
+    ]);
+    expect(getReferenceName("/ /Large/Super /man")).toEqual([
+      "",
+      "large/super/man",
     ]);
   });
 });
